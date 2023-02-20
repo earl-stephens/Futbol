@@ -57,4 +57,19 @@ public class StatTracker {
 		}
 		return lowestTotalScore;
 	}
+	
+	public double percentHomeGamesWon() {
+		double percentage;
+		int totalNumberOfGames = games.size();
+		int homeWins = 0;
+
+		for(String[] game : games) {
+			if(Integer.valueOf(game[7]) > Integer.valueOf(game[6])) {
+				++homeWins;
+			}
+		}
+		
+		percentage = ((double)homeWins / totalNumberOfGames) * 100;
+		return percentage;
+	}
 }
