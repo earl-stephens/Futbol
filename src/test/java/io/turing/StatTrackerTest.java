@@ -48,4 +48,14 @@ class StatTrackerTest {
 		
 		assertEquals(1, statTracker.lowestTotalScore());
 	}
+	
+	@Test
+	void testPercentHomeGamesWon() {
+		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
+		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
+		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		StatTracker statTracker = new StatTracker(file1, file2, file3);
+		
+		assertEquals(34.48, statTracker.percentHomeGamesWon(), 0.2);
+	}
 }
