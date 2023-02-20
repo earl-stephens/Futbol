@@ -3,7 +3,9 @@ package io.turing;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -114,5 +116,19 @@ public class StatTracker {
 		
 		average = (double)totalGoals / totalNumberOfGames;
 		return average;
+	}
+	
+	public HashMap<String, String> countOfGamesBySeason() {
+		HashMap<String, String> countOfGamesBySeason = new HashMap<>();
+		for(String[] game : games) {
+			if(countOfGamesBySeason.containsKey(game[1])) {
+				int gameCounter = Integer.valueOf(countOfGamesBySeason.get(game[1]));
+				gameCounter++;
+				countOfGamesBySeason.put(game[1], String.valueOf(gameCounter));
+			} else {
+				countOfGamesBySeason.put(game[1], "1");
+			}
+		}
+		return countOfGamesBySeason;
 	}
 }

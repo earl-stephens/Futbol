@@ -88,4 +88,16 @@ class StatTrackerTest {
 		
 		assertEquals(4.45, statTracker.averageGoalsPerGame(), 0.2);
 	}
+	
+	@Test
+	void testCountOfGamesBySeason() {
+		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
+		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
+		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		StatTracker statTracker = new StatTracker(file1, file2, file3);
+		
+		assertEquals(26, Integer.valueOf(statTracker.countOfGamesBySeason().get("20142015")));
+		assertEquals(11, Integer.valueOf(statTracker.countOfGamesBySeason().get("20142016")));
+		assertEquals(21, Integer.valueOf(statTracker.countOfGamesBySeason().get("20142017")));
+	}
 }
