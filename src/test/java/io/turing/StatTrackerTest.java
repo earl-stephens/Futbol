@@ -3,101 +3,72 @@ package io.turing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class StatTrackerTest {
+	static StatTracker statTracker;
+	
+	@BeforeAll
+	static void setUp() {
+		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
+		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
+		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker = new StatTracker(file1, file2, file3);	
+	}
 	
 	@Test
 	void testForStatTrackerObject() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
 		
 		assertNotNull(statTracker);
 	}
 
 	@Test
 	void testThatParserCreatesAnArrayOfHashes() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(32, statTracker.teams.size());
 		assertEquals(14882, statTracker.game_teams.size());
-		assertEquals(7441, statTracker.games.size());
+		assertEquals(58, statTracker.games.size());
 	}
 	
 	@Test
 	void testHighestTotalScore() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(9, statTracker.highestTotalScore());
 	}
 	
 	@Test
 	void testLowestTotalScore() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(1, statTracker.lowestTotalScore());
 	}
 	
 	@Test
 	void testPercentHomeGamesWon() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(34.48, statTracker.percentHomeGamesWon(), 0.2);
 	}
 	
 	@Test
 	void testPercentVisitorGamesWon() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(32.76, statTracker.percentVisitorGamesWon(), 0.2);
 	}
 	
 	@Test
 	void testPercentTieGames() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(32.76, statTracker.percentTieGames(), 0.2);
 	}
 	
 	@Test
 	void testAverageGoalsPerGame() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(4.45, statTracker.averageGoalsPerGame(), 0.2);
 	}
 	
 	@Test
 	void testCountOfGamesBySeason() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		StatTracker statTracker = new StatTracker(file1, file2, file3);
-		
 		assertEquals(26, Integer.valueOf(statTracker.countOfGamesBySeason().get("20142015")));
 		assertEquals(11, Integer.valueOf(statTracker.countOfGamesBySeason().get("20142016")));
 		assertEquals(21, Integer.valueOf(statTracker.countOfGamesBySeason().get("20142017")));
+	}
+	
+	@Test
+	void testAverageGoalsBySeason() {
+		
 	}
 }
