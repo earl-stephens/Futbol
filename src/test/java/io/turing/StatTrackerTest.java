@@ -46,6 +46,6 @@ class StatTrackerTest {
 		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
 		StatTracker statTracker = new StatTracker(file1, file2, file3);
 		
-		assertEquals(1, statTracker.highestTotalScore());
+		assertEquals(1, statTracker.lowestTotalScore());
 	}
 }

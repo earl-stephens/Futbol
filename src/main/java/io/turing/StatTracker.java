@@ -46,4 +46,15 @@ public class StatTracker {
 		}
 		return highestTotalScore;
 	}
+	
+	public int lowestTotalScore() {
+		int lowestTotalScore = 1000;
+		for(String[] game : games) {
+			int sum = Integer.valueOf(game[6]) + Integer.valueOf(game[7]);
+			if(sum < lowestTotalScore) {
+				lowestTotalScore = sum;
+			}
+		}
+		return lowestTotalScore;
+	}
 }
