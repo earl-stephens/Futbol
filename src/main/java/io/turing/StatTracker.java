@@ -76,30 +76,43 @@ public class StatTracker {
 	public double percentVisitorGamesWon() {
 		double percentage;
 		int totalNumberOfGames = games.size();
-		int homeWins = 0;
+		int visitorWins = 0;
 		
 		for(String[] game : games) {
 			if(Integer.valueOf(game[6]) > Integer.valueOf(game[7])) {
-				++homeWins;
+				++visitorWins;
 			}
 		}
 		
-		percentage = ((double)homeWins / totalNumberOfGames) * 100;
+		percentage = ((double)visitorWins / totalNumberOfGames) * 100;
 		return percentage;
 	}
 	
 	public double percentTieGames() {
 		double percentage;
 		int totalNumberOfGames = games.size();
-		int homeWins = 0;
+		int ties = 0;
 		
 		for(String[] game : games) {
 			if(Integer.valueOf(game[6]) == Integer.valueOf(game[7])) {
-				++homeWins;
+				++ties;
 			}
 		}
 		
-		percentage = ((double)homeWins / totalNumberOfGames) * 100;
+		percentage = ((double)ties / totalNumberOfGames) * 100;
 		return percentage;
+	}
+	
+	public double averageGoalsPerGame() {
+		double average;
+		int totalNumberOfGames = games.size();
+		int totalGoals = 0;
+		
+		for(String[] game : games) {
+			totalGoals += (Integer.valueOf(game[6]) + Integer.valueOf(game[7]));
+		}
+		
+		average = (double)totalGoals / totalNumberOfGames;
+		return average;
 	}
 }

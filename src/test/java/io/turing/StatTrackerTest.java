@@ -78,4 +78,14 @@ class StatTrackerTest {
 		
 		assertEquals(32.76, statTracker.percentTieGames(), 0.2);
 	}
+	
+	@Test
+	void testAverageGoalsPerGame() {
+		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
+		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
+		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		StatTracker statTracker = new StatTracker(file1, file2, file3);
+		
+		assertEquals(4.45, statTracker.averageGoalsPerGame(), 0.2);
+	}
 }
