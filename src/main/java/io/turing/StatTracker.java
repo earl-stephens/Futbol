@@ -35,4 +35,15 @@ public class StatTracker {
 		}
 		return listName;
 	}
+	
+	public int highestTotalScore() {
+		int highestTotalScore = 0;
+		for(String[] game : games) {
+			int sum = Integer.valueOf(game[6]) + Integer.valueOf(game[7]);
+			if(sum > highestTotalScore) {
+				highestTotalScore = sum;
+			}
+		}
+		return highestTotalScore;
+	}
 }
