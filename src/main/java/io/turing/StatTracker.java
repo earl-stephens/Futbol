@@ -3,9 +3,12 @@ package io.turing;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -130,5 +133,36 @@ public class StatTracker {
 			}
 		}
 		return countOfGamesBySeason;
+	}
+	
+	public HashMap<String, String> averageGoalsBySeason() {
+		HashMap<String, String> averageGoalsBySeason = new HashMap<>();
+		Set<String> seasonNames = new HashSet<>();
+		HashMap<String, List<Integer>> intermediateHash = new HashMap<>();
+		for(String[] game : games) {
+			seasonNames.add(game[1]);
+			if(intermediateHash.containsKey(game[1])) {
+				int goals = Integer.valueOf(game[6]) + Integer.valueOf(game[7]);
+				intermediateHash.get(game[1]).add(goals);
+			} else {
+				int goals = Integer.valueOf(game[6]) + Integer.valueOf(game[7]);
+				List<Integer> goalList = new ArrayList<>();
+				goalList.add(goals);
+				intermediateHash.put(game[1], goalList);
+			}
+		}
+		String[] seasonArray = seasonNames.toArray(new String[seasonNames.size()]);
+		for(int i = 0; i < seasonArray.length; i++) {
+			double average = 0.0;
+			int sum = 0;
+			for(int seasonGoals : intermediateHash.get(seasonArray[i])) {
+				sum += seasonGoals;
+			}
+			average = sum / (double)intermediateHash.get(seasonArray[i]).size();
+			DecimalFormat df = new DecimalFormat("0.##");
+			String stringAverage = df.format(average);
+			averageGoalsBySeason.put(seasonArray[i], stringAverage);
+		}
+		return averageGoalsBySeason;
 	}
 }

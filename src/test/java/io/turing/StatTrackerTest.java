@@ -69,6 +69,9 @@ class StatTrackerTest {
 	
 	@Test
 	void testAverageGoalsBySeason() {
+		assertEquals("4.35", statTracker.averageGoalsBySeason().get("20142015"));
+		assertEquals("4.73", statTracker.averageGoalsBySeason().get("20142016"));
+		assertEquals("4.33", statTracker.averageGoalsBySeason().get("20142017"));
 		
 	}
 }
