@@ -166,4 +166,8 @@ public class StatTracker {
 			}
 		}
 	}
+	
+	public int countOfTeams() {
+		return teams.size();
+	}
 }
