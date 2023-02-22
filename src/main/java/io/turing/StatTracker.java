@@ -170,4 +170,34 @@ public class StatTracker {
 	public int countOfTeams() {
 		return teams.size();
 	}
+	
+	public String bestOffense() {
+		Map<String, Double[]> averageHash = new HashMap<String, Double[]>();
+		double highestAverage = 0.0;
+		String name = "";
+		for(String[] game : game_teams) {
+			if(averageHash.containsKey(game[1])) {
+				double updatedAverage = (averageHash.get(game[1])[1] * averageHash.get(game[1])[0] + Integer.parseInt(game[6]))/(averageHash.get(game[1])[1] + 1);
+				Double[] tempArray = new Double[2];
+				tempArray[0] = updatedAverage;
+				tempArray[1] = averageHash.get(game[1])[1] + 1;
+				averageHash.replace(game[1], tempArray);
+				if(updatedAverage > highestAverage) {
+					name = game[1];
+				}
+			} else {
+				Double[] newTempArray = new Double[2];
+				newTempArray[0] = Double.parseDouble(game[6]);
+				newTempArray[1] = 1.0;
+				averageHash.put(game[1], newTempArray);
+			}
+		}
+		String teamName = "";
+		for(String[] team : teams) {
+			if(team[0].equals(name)) {
+				teamName = team[2];
+			}
+		}
+		return teamName;
+	}
 }
