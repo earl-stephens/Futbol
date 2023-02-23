@@ -83,4 +83,9 @@ class StatTrackerTest {
 	void testBestOffense() {
 		assertEquals("Los Angeles FC", statTracker.bestOffense());
 	}
+	
+	@Test
+	void testWorstOffense() {
+		assertEquals("Seattle Sounders FC", statTracker.worstOffense());
+	}
 }
