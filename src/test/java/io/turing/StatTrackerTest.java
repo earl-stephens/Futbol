@@ -11,7 +11,7 @@ class StatTrackerTest {
 
 	@BeforeAll
 	static void setUp() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams.csv";
+		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
 		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test.csv";
 		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
 		statTracker = new StatTracker(file1, file2, file3);
@@ -26,7 +26,7 @@ class StatTrackerTest {
 	@Test
 	void testThatParserCreatesAnArrayOfHashes() {
 		assertEquals(32, statTracker.teams.size());
-		assertEquals(14882, statTracker.game_teams.size());
+		assertEquals(66, statTracker.game_teams.size());
 		assertEquals(58, statTracker.games.size());
 	}
 
@@ -72,6 +72,20 @@ class StatTrackerTest {
 		assertEquals("4.35", statTracker.averageGoalsBySeason().get("20142015"));
 		assertEquals("4.73", statTracker.averageGoalsBySeason().get("20142016"));
 		assertEquals("4.33", statTracker.averageGoalsBySeason().get("20142017"));
-
+	}
+	
+	@Test
+	void testCountOfTeams() {
+		assertEquals(32, statTracker.countOfTeams());
+	}
+	
+	@Test
+	void testBestOffense() {
+		assertEquals("Los Angeles FC", statTracker.bestOffense());
+	}
+	
+	@Test
+	void testWorstOffense() {
+		assertEquals("Seattle Sounders FC", statTracker.worstOffense());
 	}
 }
