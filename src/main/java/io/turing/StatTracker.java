@@ -172,26 +172,7 @@ public class StatTracker {
 	}
 	
 	public String bestOffense() {
-		Map<String, Double[]> averageHash = new HashMap<String, Double[]>();
-		double highestAverage = 0.0;
-		String name = "";
-		for(String[] game : game_teams) {
-			if(averageHash.containsKey(game[1])) {
-				double updatedAverage = (averageHash.get(game[1])[1] * averageHash.get(game[1])[0] + Integer.parseInt(game[6]))/(averageHash.get(game[1])[1] + 1);
-				Double[] tempArray = new Double[2];
-				tempArray[0] = updatedAverage;
-				tempArray[1] = averageHash.get(game[1])[1] + 1;
-				averageHash.replace(game[1], tempArray);
-				if(updatedAverage > highestAverage) {
-					name = game[1];
-				}
-			} else {
-				Double[] newTempArray = new Double[2];
-				newTempArray[0] = Double.parseDouble(game[6]);
-				newTempArray[1] = 1.0;
-				averageHash.put(game[1], newTempArray);
-			}
-		}
+		String name = getBestOffenseTeamID();
 		String teamName = "";
 		for(String[] team : teams) {
 			if(team[0].equals(name)) {
@@ -199,5 +180,44 @@ public class StatTracker {
 			}
 		}
 		return teamName;
+	}
+	
+	private String getBestOffenseTeamID() {
+		Map<String, double[]> averageHash = new HashMap<>();
+		double highestAverage = 0.0;
+		String name = "";
+		for(String[] game : game_teams) {
+			if(averageHash.containsKey(game[1])) {
+				double updatedAverage = calculateUpdatedAverage(averageHash, game);
+				double[] tempArray = setTempArray(updatedAverage, averageHash, game);
+				averageHash.replace(game[1], tempArray);
+				if(updatedAverage >= highestAverage) {
+					highestAverage = updatedAverage;
+					name = game[1];
+				}
+			} else {
+				double[] newTempArray = setNewTempArray(game);
+				averageHash.put(game[1], newTempArray);
+			}
+		}
+		return name;
+	}
+	
+	private double calculateUpdatedAverage(Map<String, double[]> averageHash, String[] game) {
+		return (averageHash.get(game[1])[1] * averageHash.get(game[1])[0] + Integer.parseInt(game[6]))/(averageHash.get(game[1])[1] + 1);
+	}
+	
+	private double[] setTempArray(double updatedAverage, Map<String, double[]> averageHash, String[] game) {
+		double[] tempArray = new double[2];
+		tempArray[0] = updatedAverage;
+		tempArray[1] = averageHash.get(game[1])[1] + 1;
+		return tempArray;
+	}
+	
+	private double[] setNewTempArray(String[] game) {
+		double[] newTempArray = new double[2];
+		newTempArray[0] = Double.parseDouble(game[6]);
+		newTempArray[1] = 1.0;
+		return newTempArray;
 	}
 }
