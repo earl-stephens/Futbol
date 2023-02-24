@@ -281,6 +281,21 @@ public class StatTracker {
 		}
 		return getTeamNameFromId(averageHash);
 	}
+	
+	public String lowestScoringVisitor() {
+		Map<String, double[]> averageHash = new HashMap<>();
+		for (String[] game : game_teams) {
+			if (averageHash.containsKey(game[1]) && game[2].equals("away")) {
+				double updatedAverage = calculateUpdatedAverage(averageHash, game);
+				double[] tempArray = setTempArray(updatedAverage, averageHash, game);
+				averageHash.replace(game[1], tempArray);
+			} else if (!averageHash.containsKey(game[1]) && game[2].equals("away")) {
+				double[] newTempArray = setNewTempArray(game);
+				averageHash.put(game[1], newTempArray);
+			}
+		}
+		return getLowestTeamNameFromId(averageHash);
+	}
 
 	private String getHighestScoringVisitorTeamId(Map<String, double[]> averageHash) {
 		double average = 0.0;
@@ -297,6 +312,30 @@ public class StatTracker {
 	
 	private String getTeamNameFromId(Map<String, double[]> averageHash) {
 		String id = getHighestScoringVisitorTeamId(averageHash);
+		String teamName = "";
+		for (String[] team : teams) {
+			if (team[0].equals(id)) {
+				teamName = team[2];
+			}
+		}
+		return teamName;
+	}
+	
+	private String getTeamNameFromIdForLowest(Map<String, double[]> averageHash) {
+		double average = 1000.0;
+		String teamId = null;
+		Set<String> keyMap = averageHash.keySet();
+		for (String key : keyMap) {
+			if (averageHash.get(key)[0] < average) {
+				average = averageHash.get(key)[0];
+				teamId = key;
+			}
+		}
+		return teamId;
+	}
+	
+	private String getLowestTeamNameFromId(Map<String, double[]> averageHash) {
+		String id = getTeamNameFromIdForLowest(averageHash);
 		String teamName = "";
 		for (String[] team : teams) {
 			if (team[0].equals(id)) {

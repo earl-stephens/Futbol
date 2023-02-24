@@ -92,4 +92,9 @@ class StatTrackerTest {
 	void testHighestScoringVisitor() {
 		assertEquals("Los Angeles FC", statTracker.highestScoringVisitor());
 	}
+	
+	@Test
+	void testLowestScoringVisitor() {
+		assertEquals("Philadelphia Union", statTracker.lowestScoringVisitor());
+	}
 }
