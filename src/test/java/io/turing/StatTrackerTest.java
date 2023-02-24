@@ -81,6 +81,7 @@ class StatTrackerTest {
 	
 	@Test
 	void testBestOffense() {
+		assertEquals("Los Angeles FC", statTracker.bestOffense());
 	}
 	
 	@Test
