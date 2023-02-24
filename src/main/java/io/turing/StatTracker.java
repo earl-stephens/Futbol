@@ -279,10 +279,10 @@ public class StatTracker {
 				averageHash.put(game[1], newTempArray);
 			}
 		}
-		return getHighestScoringVisitorTeamName(averageHash);
+		return getTeamNameFromId(averageHash);
 	}
 
-	private String getHighestScoringVisitorTeamName(Map<String, double[]> averageHash) {
+	private String getHighestScoringVisitorTeamId(Map<String, double[]> averageHash) {
 		double average = 0.0;
 		String teamId = null;
 		Set<String> keyMap = averageHash.keySet();
@@ -292,9 +292,14 @@ public class StatTracker {
 				teamId = key;
 			}
 		}
+		return teamId;
+	}
+	
+	private String getTeamNameFromId(Map<String, double[]> averageHash) {
+		String id = getHighestScoringVisitorTeamId(averageHash);
 		String teamName = "";
 		for (String[] team : teams) {
-			if (team[0].equals(teamId)) {
+			if (team[0].equals(id)) {
 				teamName = team[2];
 			}
 		}
