@@ -284,7 +284,24 @@ public class StatTracker {
 		return teamName;
 	}
 	
+	private Map<String, double[]> createAverageHashForHome() {
+		Map<String, double[]> averageHash = new HashMap<>();
+		for (String[] game : game_teams) {
+			if (averageHash.containsKey(game[1]) && game[2].equals("home")) {
+				double updatedAverage = calculateUpdatedAverage(averageHash, game);
+				double[] tempArray = setTempArray(updatedAverage, averageHash, game);
+				averageHash.replace(game[1], tempArray);
+			} else if (!averageHash.containsKey(game[1]) && game[2].equals("home")) {
+				double[] newTempArray = setNewTempArray(game);
+				averageHash.put(game[1], newTempArray);
+			}
+		}
+		return averageHash;
+	}
+	
 	public String highestScoringHomeTeam() {
-		return null;
+		Map<String, double[]> averageHash = createAverageHashForHome();
+		String idToSearchForName = getBestAndWorstTeamId(averageHash, ">");
+		return getTeamNameFromId(idToSearchForName);
 	}
 }
