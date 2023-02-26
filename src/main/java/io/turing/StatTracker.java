@@ -283,4 +283,8 @@ public class StatTracker {
 		}
 		return teamName;
 	}
+	
+	public String highestScoringHomeTeam() {
+		return null;
+	}
 }
