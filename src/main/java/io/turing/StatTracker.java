@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,11 +44,9 @@ public class StatTracker {
 	public int highestTotalScore() {
 		int highestTotalScore = 0;
 		for (String[] game : games) {
-			// Arrays.stream(games).forEach(game -> {
 			int sum = Integer.valueOf(game[6]) + Integer.valueOf(game[7]);
 			if (sum > highestTotalScore) {
 				highestTotalScore = sum;
-				// });
 			}
 		}
 		return highestTotalScore;
