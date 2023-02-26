@@ -304,4 +304,11 @@ public class StatTracker {
 		String idToSearchForName = getBestAndWorstTeamId(averageHash, ">");
 		return getTeamNameFromId(idToSearchForName);
 	}
+	
+	public String lowestScoringHomeTeam() {
+		Map<String, double[]> averageHash = createAverageHashForHome();
+		String idToSearchForName = getBestAndWorstTeamId(averageHash, "<");
+		return getTeamNameFromId(idToSearchForName);
+	}
+
 }
