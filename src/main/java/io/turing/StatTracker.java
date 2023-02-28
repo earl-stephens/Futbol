@@ -248,25 +248,25 @@ public class StatTracker {
 	}
 
 	public String highestScoringVisitor() {
-		Map<String, double[]> averageHash = createAverageHashForVisitors();
+		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("away");
 		String idToSearchForName = getBestAndWorstTeamId(averageHash, ">");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
 	public String lowestScoringVisitor() {
-		Map<String, double[]> averageHash = createAverageHashForVisitors();
+		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("away");
 		String idToSearchForName = getBestAndWorstTeamId(averageHash, "<");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
-	private Map<String, double[]> createAverageHashForVisitors() {
+	private Map<String, double[]> createAverageHashForVisitorsAndHome(String visitorOrHome) {
 		Map<String, double[]> averageHash = new HashMap<>();
 		for (String[] game : game_teams) {
-			if (averageHash.containsKey(game[1]) && game[2].equals("away")) {
+			if (averageHash.containsKey(game[1]) && game[2].equals(visitorOrHome)) {
 				double updatedAverage = calculateUpdatedAverage(averageHash, game);
 				double[] tempArray = setTempArray(updatedAverage, averageHash, game);
 				averageHash.replace(game[1], tempArray);
-			} else if (!averageHash.containsKey(game[1]) && game[2].equals("away")) {
+			} else if (!averageHash.containsKey(game[1]) && game[2].equals(visitorOrHome)) {
 				double[] newTempArray = setNewTempArray(game);
 				averageHash.put(game[1], newTempArray);
 			}
@@ -284,29 +284,14 @@ public class StatTracker {
 		return teamName;
 	}
 	
-	private Map<String, double[]> createAverageHashForHome() {
-		Map<String, double[]> averageHash = new HashMap<>();
-		for (String[] game : game_teams) {
-			if (averageHash.containsKey(game[1]) && game[2].equals("home")) {
-				double updatedAverage = calculateUpdatedAverage(averageHash, game);
-				double[] tempArray = setTempArray(updatedAverage, averageHash, game);
-				averageHash.replace(game[1], tempArray);
-			} else if (!averageHash.containsKey(game[1]) && game[2].equals("home")) {
-				double[] newTempArray = setNewTempArray(game);
-				averageHash.put(game[1], newTempArray);
-			}
-		}
-		return averageHash;
-	}
-	
 	public String highestScoringHomeTeam() {
-		Map<String, double[]> averageHash = createAverageHashForHome();
+		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("home");
 		String idToSearchForName = getBestAndWorstTeamId(averageHash, ">");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
 	public String lowestScoringHomeTeam() {
-		Map<String, double[]> averageHash = createAverageHashForHome();
+		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("home");
 		String idToSearchForName = getBestAndWorstTeamId(averageHash, "<");
 		return getTeamNameFromId(idToSearchForName);
 	}
