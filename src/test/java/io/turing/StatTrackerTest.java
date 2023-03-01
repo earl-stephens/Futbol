@@ -98,4 +98,14 @@ class StatTrackerTest {
 	void testLowestScoringVisitor() {
 		assertEquals("Philadelphia Union", statTracker.lowestScoringVisitor());
 	}
+	
+	@Test
+	void testHighestScoringHomeTeam() {
+		assertEquals("Houston Dash", statTracker.highestScoringHomeTeam());
+	}
+	
+	@Test
+	void testLowestScoringHomeTeam() {
+		assertEquals("Portland Timbers", statTracker.lowestScoringHomeTeam());
+	}
 }
