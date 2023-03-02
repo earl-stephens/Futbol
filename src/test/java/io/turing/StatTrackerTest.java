@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class StatTrackerTest {
 	static StatTracker statTracker;
+	static StatTracker statTracker2;
 
 	@BeforeAll
 	static void setUp() {
@@ -107,5 +108,14 @@ class StatTrackerTest {
 	@Test
 	void testLowestScoringHomeTeam() {
 		assertEquals("Portland Timbers", statTracker.lowestScoringHomeTeam());
+	}
+	
+	@Test
+	void testWinningestCoach() {
+		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
+		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker2 = new StatTracker(file1, file2, file3);
+		assertEquals("Randy Carlyle", statTracker2.winningestCoach("20162017"));
 	}
 }
