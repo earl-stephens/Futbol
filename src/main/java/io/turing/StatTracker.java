@@ -296,4 +296,46 @@ public class StatTracker {
 		return getTeamNameFromId(idToSearchForName);
 	}
 
+	public String winningestCoach(String season) {
+		//create list of games for the selected season
+		System.out.println(games.size());
+		List<String[]> seasonList = new ArrayList<>();
+		for(String[] selectedSeason : games) {
+			if(selectedSeason[0].equals(season)) {
+				seasonList.add(selectedSeason);
+			}
+		}
+		//pick out games from game_teams from the above loop
+		List<String[]> seasonGames = new ArrayList<>();
+		for(String[] gamesInSeason : seasonList) {
+			if(gamesInSeason[0].equals(game_teams.get(0))) {
+				seasonGames.add(game_teams.get(0));
+			}
+		}
+		//iterate through loop and calculate average
+		Map<String, double[]> averageHash = new HashMap<>();
+		for(String[] selectedGame : seasonGames) {
+			if(averageHash.containsKey(selectedGame[1]) && selectedGame[3].equals("WIN")) {
+				double updatedAverage = (averageHash.get(selectedGame[1])[0] * averageHash.get(selectedGame[1])[1] + 1) / (averageHash.get(selectedGame[1])[0] + 1);
+				double[] tempArray = new double[2];
+				tempArray[0] = updatedAverage;
+				tempArray[1] = averageHash.get(selectedGame[1])[1] + 1;
+				averageHash.replace(selectedGame[1], tempArray);
+			} else if(!averageHash.containsKey(selectedGame[1]) && selectedGame[3].equals("WIN")) {
+				double[] newTempArray = new double[2];
+				newTempArray[0] = 1;
+				newTempArray[1] = 1;
+				averageHash.put(selectedGame[1], newTempArray);
+			}
+		}
+		//get team id with highest percentage
+		String teamId = getBestAndWorstTeamId(averageHash, ">");
+		String coach = "";
+		for(String[] team : game_teams) {
+			if(team[0].equals(teamId)) {
+				coach = team[5];
+			}
+		}
+		return coach;
+	}
 }

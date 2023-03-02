@@ -112,10 +112,10 @@ class StatTrackerTest {
 	
 	@Test
 	void testWinningestCoach() {
-		String file1 = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
-		String file2 = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
-		String file3 = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
-		statTracker2 = new StatTracker(file1, file2, file3);
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker2 = new StatTracker(file1a, file2a, file3a);
 		assertEquals("Randy Carlyle", statTracker2.winningestCoach("20162017"));
 	}
 }
