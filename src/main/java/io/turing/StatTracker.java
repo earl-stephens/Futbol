@@ -304,7 +304,7 @@ public class StatTracker {
 				seasonList.add(selectedSeason);
 			}
 		}
-		//pick out games from game_teams from the above loop
+		//pick out game_teams from games from the above loop
 		List<String[]> seasonGames = new ArrayList<>();
 		for(String[] gamesInSeason : seasonList) {
 			for(String[] game_team : game_teams) {
@@ -331,9 +331,9 @@ public class StatTracker {
 		}
 		//get team id with highest percentage
 		String teamId = getBestAndWorstTeamId(averageHash, ">");
-		System.out.println(teamId);
 		String coach = "";
-		for(String[] team : game_teams) {
+		//pull from seasonGames, since it is only the games for the selected season
+		for(String[] team : seasonGames) {
 			if(team[1].equals(teamId)) {
 				coach = team[5];
 			}

@@ -27,7 +27,7 @@ class StatTrackerTest {
 	@Test
 	void testThatParserCreatesAnArrayOfHashes() {
 		assertEquals(32, statTracker.teams.size());
-		assertEquals(66, statTracker.game_teams.size());
+		assertEquals(67, statTracker.game_teams.size());
 		assertEquals(58, statTracker.games.size());
 	}
 
