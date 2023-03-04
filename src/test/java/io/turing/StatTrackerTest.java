@@ -127,4 +127,9 @@ class StatTrackerTest {
 		statTracker2 = new StatTracker(file1a, file2a, file3a);
 		assertEquals("Mike Yeo", statTracker2.worstCoach("20172018"));
 	}
+	
+	@Test
+	void testMostTackles() {
+		assertEquals("Chicago Fire", statTracker.mostTackles("20162017"));
+	}
 }
