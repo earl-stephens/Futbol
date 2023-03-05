@@ -443,4 +443,8 @@ public class StatTracker {
 		String teamId = getTeamIdFromNumberOfTackles(hashForTackles, "<");
 		return getTeamNameFromId(teamId);
 	}
+	
+	public String mostAccurateTeam(String season) {
+		return "";
+	}
 }
