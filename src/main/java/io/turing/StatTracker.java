@@ -382,13 +382,28 @@ public class StatTracker {
 		return coach;
 	}
 	
-	public String mostTackles(String season) {
-		//create list of games for the selected season
-		List<String[]> seasonList = gamesForSelectedSeason(season);
-		
-		//pick out game_teams from games from the above loop
-		List<String[]> seasonGames = pullGameTeamsFromGames(seasonList);
-		
+	private String getTeamIdFromNumberOfTackles(Map<String, Integer> hashForTackles, String mostOrFewest) {
+		int highestNumberOfTackles = 0;
+		int lowestNumberOfTackles = 1000;
+		String teamId = "";
+		Set<String> keyMap = hashForTackles.keySet();
+		for(String individualKey : keyMap) {
+			if(mostOrFewest.equals(">")) {
+				if(hashForTackles.get(individualKey) > highestNumberOfTackles) {
+					highestNumberOfTackles = hashForTackles.get(individualKey);
+					teamId = individualKey;
+				}
+			} else {
+				if(hashForTackles.get(individualKey) < lowestNumberOfTackles) {
+					lowestNumberOfTackles = hashForTackles.get(individualKey);
+					teamId = individualKey;
+				}	
+			}
+		}
+		return teamId;
+	}
+	
+	private Map<String, Integer> createHashForTackles(List<String[]> seasonGames) {
 		Map<String, Integer> hashForTackles = new HashMap<>();
 		for(String[] selectedGame : seasonGames) {
 			if(hashForTackles.containsKey(selectedGame[1])) {
@@ -400,21 +415,32 @@ public class StatTracker {
 				hashForTackles.put(selectedGame[1], updatedTackleCount);
 			}
 		}
-		int highestNumberOfTackles = 0;
-		String teamId = "";
-		Set<String> keyMap = hashForTackles.keySet();
-		for(String individualKey : keyMap) {
-			if(hashForTackles.get(individualKey) > highestNumberOfTackles) {
-				highestNumberOfTackles = hashForTackles.get(individualKey);
-				teamId = individualKey;
-			}
-		}
-		String teamName = "";
-		for(String[] team : teams) {
-			if(team[0].equals(teamId)) {
-				teamName = team[2];
-			}
-		}
-		return teamName;
+		return hashForTackles;
+	}
+	
+	public String mostTackles(String season) {
+		//create list of games for the selected season
+		List<String[]> seasonList = gamesForSelectedSeason(season);
+		
+		//pick out game_teams from games from the above loop
+		List<String[]> seasonGames = pullGameTeamsFromGames(seasonList);
+		
+		Map<String, Integer> hashForTackles = createHashForTackles(seasonGames);
+		
+		String teamId = getTeamIdFromNumberOfTackles(hashForTackles, ">");
+		return getTeamNameFromId(teamId);
+	}
+	
+	public String fewestTackles(String season) {
+		//create list of games for the selected season
+		List<String[]> seasonList = gamesForSelectedSeason(season);
+		
+		//pick out game_teams from games from the above loop
+		List<String[]> seasonGames = pullGameTeamsFromGames(seasonList);
+		
+		Map<String, Integer> hashForTackles = createHashForTackles(seasonGames);
+		
+		String teamId = getTeamIdFromNumberOfTackles(hashForTackles, "<");
+		return getTeamNameFromId(teamId);
 	}
 }
