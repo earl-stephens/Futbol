@@ -381,4 +381,40 @@ public class StatTracker {
 		String coach = getCoachFromTeamId(seasonGames, teamId);
 		return coach;
 	}
+	
+	public String mostTackles(String season) {
+		//create list of games for the selected season
+		List<String[]> seasonList = gamesForSelectedSeason(season);
+		
+		//pick out game_teams from games from the above loop
+		List<String[]> seasonGames = pullGameTeamsFromGames(seasonList);
+		
+		Map<String, Integer> hashForTackles = new HashMap<>();
+		for(String[] selectedGame : seasonGames) {
+			if(hashForTackles.containsKey(selectedGame[1])) {
+				int updatedTackleCount = hashForTackles.get(selectedGame[1]);
+				updatedTackleCount += Integer.parseInt(selectedGame[8]);
+				hashForTackles.replace(selectedGame[1], updatedTackleCount);
+			} else {
+				int updatedTackleCount = Integer.parseInt(selectedGame[8]);
+				hashForTackles.put(selectedGame[1], updatedTackleCount);
+			}
+		}
+		int highestNumberOfTackles = 0;
+		String teamId = "";
+		Set<String> keyMap = hashForTackles.keySet();
+		for(String individualKey : keyMap) {
+			if(hashForTackles.get(individualKey) > highestNumberOfTackles) {
+				highestNumberOfTackles = hashForTackles.get(individualKey);
+				teamId = individualKey;
+			}
+		}
+		String teamName = "";
+		for(String[] team : teams) {
+			if(team[0].equals(teamId)) {
+				teamName = team[2];
+			}
+		}
+		return teamName;
+	}
 }

@@ -130,6 +130,10 @@ class StatTrackerTest {
 	
 	@Test
 	void testMostTackles() {
-		assertEquals("Chicago Fire", statTracker.mostTackles("20162017"));
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker2 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("Real Salt Lake", statTracker2.mostTackles("20162017"));
 	}
 }
