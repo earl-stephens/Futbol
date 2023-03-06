@@ -181,6 +181,10 @@ class StatTrackerTest {
 	
 	@Test
 	void testBestSeason() {
-		assertEquals("20162017", statTracker.bestSeason("4"));
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker2 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("20172018", statTracker2.bestSeason("4"));
 	}
 }
