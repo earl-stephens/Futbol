@@ -360,8 +360,7 @@ public class StatTracker {
 		String teamId = getBestAndWorstTeamId(averageHash, ">");
 		
 		//pull from seasonGames, since it is only the games for the selected season
-		String coach = getCoachFromTeamId(seasonGames, teamId);
-		return coach;
+		return getCoachFromTeamId(seasonGames, teamId);
 	}
 	
 	public String worstCoach(String season) {
@@ -378,8 +377,7 @@ public class StatTracker {
 		String teamId = getBestAndWorstTeamId(averageHash, ">");
 		
 		//pull from seasonGames, since it is only the games for the selected season
-		String coach = getCoachFromTeamId(seasonGames, teamId);
-		return coach;
+		return getCoachFromTeamId(seasonGames, teamId);
 	}
 	
 	private String getTeamIdFromNumberOfTackles(Map<String, Integer> hashForTackles, String mostOrFewest) {
@@ -444,51 +442,85 @@ public class StatTracker {
 		return getTeamNameFromId(teamId);
 	}
 	
+	private Map<String, Double> createHashForRatios(Map<String, double[]> hashForAccuracy) {
+		Map<String, Double> hashForRatios = new HashMap<>();
+		Set<String> keyMap = hashForAccuracy.keySet();
+		
+		for(String key : keyMap) {
+			double ratio;
+			ratio = hashForAccuracy.get(key)[0] / hashForAccuracy.get(key)[1];
+			hashForRatios.put(key, ratio);
+		}
+		return hashForRatios;
+	}
+	
+	private String getTeamIdFromRatioHash(Map<String, double[]> hashForAccuracy, String highOrLow) {
+		Map<String, Double> hashForRatios = createHashForRatios(hashForAccuracy);
+		Set<String> keyMap = hashForAccuracy.keySet();
+		String teamId = "";
+		double minimum = 0.0;
+		double maximum = 1000.0;
+		
+		for(String key : keyMap) {
+			if(highOrLow.equals(">")) {
+				if(hashForRatios.get(key) > minimum) {
+					minimum = hashForRatios.get(key);
+					teamId = key;
+				}
+			} else {
+				if(hashForRatios.get(key) < maximum) {
+					maximum = hashForRatios.get(key);
+					teamId = key;
+				}
+			}
+		}
+		
+		return teamId;
+	}
+	
+	private Map<String, double[]> createHashForAccuracy(List<String[]> seasonGames) {
+		Map<String, double[]> hashForAccuracy = new HashMap<>();
+		for(String[] selectedGame : seasonGames) {
+			if(hashForAccuracy.containsKey(selectedGame[1])) {
+				//create a new element for the double array value assigned to this key
+				double[] shotsAndGoalsArray = new double[2];
+				
+				//get the current values
+				double firstValue = hashForAccuracy.get(selectedGame[1])[0];
+				double secondValue = hashForAccuracy.get(selectedGame[1])[1];
+				
+				//update the values
+				firstValue = firstValue + Double.parseDouble(selectedGame[7]);
+				secondValue = secondValue + Double.parseDouble(selectedGame[6]);
+				
+				//update the array elements
+				shotsAndGoalsArray[0] = firstValue;
+				shotsAndGoalsArray[1] = secondValue;
+				
+				//put the new elements in the hash
+				hashForAccuracy.replace(selectedGame[1], shotsAndGoalsArray);
+			} else {
+				double[] shotsAndGoalsArray = new double[2];
+				
+				//grab the first set of values and start populating the array
+				shotsAndGoalsArray[0] = Double.parseDouble(selectedGame[7]);
+				shotsAndGoalsArray[1] = Double.parseDouble(selectedGame[6]); 
+				hashForAccuracy.put(selectedGame[1], shotsAndGoalsArray);
+			}
+		}
+		return hashForAccuracy;
+	}
+	
 	public String mostAccurateTeam(String season) {
 		//create list of games for the selected season
 		List<String[]> seasonList = gamesForSelectedSeason(season);
 		
 		//pick out game_teams from games from the above loop
 		List<String[]> seasonGames = pullGameTeamsFromGames(seasonList);
-		
-		Map<String, double[]> hashForAccuracy = new HashMap<>();
-		for(String[] selectedGame : seasonGames) {
-			if(hashForAccuracy.containsKey(selectedGame[1])) {
-				//create a new element for the double array value assigned to this key
-				double[] shotsAndGoalsArray = new double[2];
-				double firstValue = hashForAccuracy.get(selectedGame[1])[0];
-				double secondValue = hashForAccuracy.get(selectedGame[1])[1];
-				firstValue = firstValue + Double.parseDouble(selectedGame[7]);
-				secondValue = secondValue + Double.parseDouble(selectedGame[6]);
-				shotsAndGoalsArray[0] = firstValue;
-				shotsAndGoalsArray[1] = secondValue;
-				hashForAccuracy.replace(selectedGame[1], shotsAndGoalsArray);
-			} else {
-				double[] shotsAndGoalsArray = new double[2];
-				shotsAndGoalsArray[0] = Double.parseDouble(selectedGame[7]);
-				shotsAndGoalsArray[1] = Double.parseDouble(selectedGame[6]); 
-				hashForAccuracy.put(selectedGame[1], shotsAndGoalsArray);
-			}
-		}
-		
-		//iterate through hash and create ratios
-		Map<String, Double> hashForRatios = new HashMap<>();
-		Set<String> keyMap = hashForAccuracy.keySet();
-		for(String key : keyMap) {
-			double ratio = 0.0;
-			ratio = hashForAccuracy.get(key)[0] / hashForAccuracy.get(key)[1];
-			hashForRatios.put(key, ratio);
-		}
+		Map<String, double[]> hashForAccuracy = createHashForAccuracy(seasonGames);
 		
 		//iterate through and find highest ratio
-		String teamId = "";
-		double minimum = 0.0;
-		for(String key : keyMap) {
-			if(hashForRatios.get(key) > minimum) {
-				minimum = hashForRatios.get(key);
-				teamId = key;
-			}
-		}
+		String teamId = getTeamIdFromRatioHash(hashForAccuracy, ">");
 		return getTeamNameFromId(teamId);
 	}
 
@@ -498,45 +530,10 @@ public class StatTracker {
 		
 		//pick out game_teams from games from the above loop
 		List<String[]> seasonGames = pullGameTeamsFromGames(seasonList);
+		Map<String, double[]> hashForAccuracy = createHashForAccuracy(seasonGames);
 		
-		Map<String, double[]> hashForAccuracy = new HashMap<>();
-		for(String[] selectedGame : seasonGames) {
-			if(hashForAccuracy.containsKey(selectedGame[1])) {
-				//create a new element for the double array value assigned to this key
-				double[] shotsAndGoalsArray = new double[2];
-				double firstValue = hashForAccuracy.get(selectedGame[1])[0];
-				double secondValue = hashForAccuracy.get(selectedGame[1])[1];
-				firstValue = firstValue + Double.parseDouble(selectedGame[7]);
-				secondValue = secondValue + Double.parseDouble(selectedGame[6]);
-				shotsAndGoalsArray[0] = firstValue;
-				shotsAndGoalsArray[1] = secondValue;
-				hashForAccuracy.replace(selectedGame[1], shotsAndGoalsArray);
-			} else {
-				double[] shotsAndGoalsArray = new double[2];
-				shotsAndGoalsArray[0] = Double.parseDouble(selectedGame[7]);
-				shotsAndGoalsArray[1] = Double.parseDouble(selectedGame[6]); 
-				hashForAccuracy.put(selectedGame[1], shotsAndGoalsArray);
-			}
-		}
-		
-		//iterate through hash and create ratios
-		Map<String, Double> hashForRatios = new HashMap<>();
-		Set<String> keyMap = hashForAccuracy.keySet();
-		for(String key : keyMap) {
-			double ratio = 0.0;
-			ratio = hashForAccuracy.get(key)[0] / hashForAccuracy.get(key)[1];
-			hashForRatios.put(key, ratio);
-		}
-		
-		//iterate through and find highest ratio
-		String teamId = "";
-		double maximum = 1000.0;
-		for(String key : keyMap) {
-			if(hashForRatios.get(key) < maximum) {
-				maximum = hashForRatios.get(key);
-				teamId = key;
-			}
-		}
+		//iterate through and find lowest ratio
+		String teamId = getTeamIdFromRatioHash(hashForAccuracy, "<");
 		return getTeamNameFromId(teamId);
 	}
 }
