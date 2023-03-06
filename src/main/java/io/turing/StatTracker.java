@@ -539,6 +539,15 @@ public class StatTracker {
 	
 	public Map<String, String> teamInfo(String teamId) {
 		Map<String, String> teamInfo = new HashMap<>();
+		for(String[] team : teams) {
+			if(team[0].equals(teamId)) {
+				teamInfo.put("team_id", teamId);
+				teamInfo.put("franchise_id", team[1]);
+				teamInfo.put("team_name", team[2]);
+				teamInfo.put("abbreviation", team[3]);
+				teamInfo.put("link", team[5]);
+			}
+		}
 		return teamInfo;
 	}
 }
