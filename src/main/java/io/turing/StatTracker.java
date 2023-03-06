@@ -550,4 +550,8 @@ public class StatTracker {
 		}
 		return teamInfo;
 	}
+	
+	public String bestSeason(String teamId) {
+		return "";
+	}
 }

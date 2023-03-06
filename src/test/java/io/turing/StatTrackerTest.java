@@ -178,4 +178,9 @@ class StatTrackerTest {
 		
 		assertEquals("34", statTracker.teamInfo("18").get("franchise_id"));
 	}
+	
+	@Test
+	void testBestSeason() {
+		assertEquals("20162017", statTracker.bestSeason("4"));
+	}
 }
