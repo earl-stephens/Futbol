@@ -582,4 +582,36 @@ public class StatTracker {
 		}
 		return season;
 	}
+	
+	public String worstSeason(String teamId) {
+		Map<String, double[]> percentageHash = new HashMap<>();
+		for(String[] game_team : game_teams) {
+			if(game_team[1].equals(teamId)) {
+				for(String[] game : games) {
+					if(game[0].equals(game_team[0])) {
+						if(percentageHash.containsKey(game[1])) {
+							double result = game_team[3].equals("WIN") ? 1.0 : 0.0;
+							double updatedAverage = (percentageHash.get(game[1])[0] * percentageHash.get(game[1])[1] + result)/(percentageHash.get(game[1])[1] + 1);
+							double[] updatedAverageArray = {updatedAverage, (percentageHash.get(game[1])[1] + 1)};
+							percentageHash.replace(game[1], updatedAverageArray);
+						} else {
+							double result = game_team[3].equals("WIN") ? 1.0 : 0.0;
+							double[] averageArray = {result, 1.0};
+							percentageHash.put(game[1], averageArray);
+						}
+					}
+				}
+			}
+		}
+		Set<String> keyMap = percentageHash.keySet();
+		double maximum = 1000.0;
+		String season = "";
+		for(String key : keyMap) {
+			if(percentageHash.get(key)[0] < maximum) {
+				maximum = percentageHash.get(key)[0];
+				season = key;
+			}
+		}
+		return season;
+	}
 }
