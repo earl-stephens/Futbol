@@ -3,6 +3,9 @@ package io.turing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -162,5 +165,17 @@ class StatTrackerTest {
 		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
 		statTracker2 = new StatTracker(file1a, file2a, file3a);
 		assertEquals("New York Red Bulls", statTracker2.leastAccurateTeam("20162017"));
+	}
+	
+	@Test
+	void testTeamInfo() {
+		Map<String, String> expected = new HashMap<>();
+		expected.put("team_id", "18");
+		expected.put("franchise_id", "34");
+		expected.put("team_name", "Minnesota United FC");
+		expected.put("abbreviation", "MIN");
+		expected.put("link", "/api/v1/teams/18");
+		
+		assertEquals("34", statTracker.teamInfo("18").get("franchise_id"));
 	}
 }

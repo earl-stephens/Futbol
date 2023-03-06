@@ -536,4 +536,9 @@ public class StatTracker {
 		String teamId = getTeamIdFromRatioHash(hashForAccuracy, "<");
 		return getTeamNameFromId(teamId);
 	}
+	
+	public Map<String, String> teamInfo(String teamId) {
+		Map<String, String> teamInfo = new HashMap<>();
+		return teamInfo;
+	}
 }
