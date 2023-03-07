@@ -183,12 +183,12 @@ public class StatTracker {
 
 	private String getBestOffenseTeamID() {
 		Map<String, double[]> averageHash = createAverageHash();
-		return getBestAndWorstTeamId(averageHash, ">");
+		return getBestAndWorst(averageHash, ">");
 	}
 
 	private String getWorstOffenseTeamID() {
 		Map<String, double[]> averageHash = createAverageHash();
-		return getBestAndWorstTeamId(averageHash, "<");
+		return getBestAndWorst(averageHash, "<");
 	}
 	
 	private Map<String, double[]> createAverageHash() {
@@ -225,7 +225,7 @@ public class StatTracker {
 		return newTempArray;
 	}
 
-	private String getBestAndWorstTeamId(Map<String, double[]> averageHash, String bestOrWorst) {
+	private String getBestAndWorst(Map<String, double[]> averageHash, String bestOrWorst) {
 		double highestAverage = 0.0;
 		double lowestAverage = 1000.0;
 		String teamId = null;
@@ -249,13 +249,13 @@ public class StatTracker {
 
 	public String highestScoringVisitor() {
 		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("away");
-		String idToSearchForName = getBestAndWorstTeamId(averageHash, ">");
+		String idToSearchForName = getBestAndWorst(averageHash, ">");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
 	public String lowestScoringVisitor() {
 		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("away");
-		String idToSearchForName = getBestAndWorstTeamId(averageHash, "<");
+		String idToSearchForName = getBestAndWorst(averageHash, "<");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
@@ -286,13 +286,13 @@ public class StatTracker {
 	
 	public String highestScoringHomeTeam() {
 		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("home");
-		String idToSearchForName = getBestAndWorstTeamId(averageHash, ">");
+		String idToSearchForName = getBestAndWorst(averageHash, ">");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
 	public String lowestScoringHomeTeam() {
 		Map<String, double[]> averageHash = createAverageHashForVisitorsAndHome("home");
-		String idToSearchForName = getBestAndWorstTeamId(averageHash, "<");
+		String idToSearchForName = getBestAndWorst(averageHash, "<");
 		return getTeamNameFromId(idToSearchForName);
 	}
 	
@@ -357,7 +357,7 @@ public class StatTracker {
 		Map<String, double[]> averageHash = createWinLossAverageHash(seasonGames, "WIN");
 		
 		//get team id with highest percentage
-		String teamId = getBestAndWorstTeamId(averageHash, ">");
+		String teamId = getBestAndWorst(averageHash, ">");
 		
 		//pull from seasonGames, since it is only the games for the selected season
 		return getCoachFromTeamId(seasonGames, teamId);
@@ -374,7 +374,7 @@ public class StatTracker {
 		Map<String, double[]> averageHash = createWinLossAverageHash(seasonGames, "LOSS");
 
 		//get team id with highest percentage
-		String teamId = getBestAndWorstTeamId(averageHash, ">");
+		String teamId = getBestAndWorst(averageHash, ">");
 		
 		//pull from seasonGames, since it is only the games for the selected season
 		return getCoachFromTeamId(seasonGames, teamId);
@@ -551,12 +551,16 @@ public class StatTracker {
 		return teamInfo;
 	}
 	
-	public String bestSeason(String teamId) {
+	private Map<String, double[]> createPercentageHash(String teamId) {
 		Map<String, double[]> percentageHash = new HashMap<>();
+		//iterate over game_teams and get rows for the selected team
 		for(String[] game_team : game_teams) {
 			if(game_team[1].equals(teamId)) {
+				//iterate over games and get games that match the selected game_teams row
+				//based on game_id
 				for(String[] game : games) {
 					if(game[0].equals(game_team[0])) {
+						//get row data from game and update the percentage
 						if(percentageHash.containsKey(game[1])) {
 							double result = game_team[3].equals("WIN") ? 1.0 : 0.0;
 							double updatedAverage = (percentageHash.get(game[1])[0] * percentageHash.get(game[1])[1] + result)/(percentageHash.get(game[1])[1] + 1);
@@ -571,47 +575,18 @@ public class StatTracker {
 				}
 			}
 		}
-		Set<String> keyMap = percentageHash.keySet();
-		double minimum = 0.0;
-		String season = "";
-		for(String key : keyMap) {
-			if(percentageHash.get(key)[0] > minimum) {
-				minimum = percentageHash.get(key)[0];
-				season = key;
-			}
-		}
-		return season;
+		return percentageHash;
+	}
+	
+	public String bestSeason(String teamId) {
+		Map<String, double[]> percentageHash = createPercentageHash(teamId);
+
+		return getBestAndWorst(percentageHash, ">");
 	}
 	
 	public String worstSeason(String teamId) {
-		Map<String, double[]> percentageHash = new HashMap<>();
-		for(String[] game_team : game_teams) {
-			if(game_team[1].equals(teamId)) {
-				for(String[] game : games) {
-					if(game[0].equals(game_team[0])) {
-						if(percentageHash.containsKey(game[1])) {
-							double result = game_team[3].equals("WIN") ? 1.0 : 0.0;
-							double updatedAverage = (percentageHash.get(game[1])[0] * percentageHash.get(game[1])[1] + result)/(percentageHash.get(game[1])[1] + 1);
-							double[] updatedAverageArray = {updatedAverage, (percentageHash.get(game[1])[1] + 1)};
-							percentageHash.replace(game[1], updatedAverageArray);
-						} else {
-							double result = game_team[3].equals("WIN") ? 1.0 : 0.0;
-							double[] averageArray = {result, 1.0};
-							percentageHash.put(game[1], averageArray);
-						}
-					}
-				}
-			}
-		}
-		Set<String> keyMap = percentageHash.keySet();
-		double maximum = 1000.0;
-		String season = "";
-		for(String key : keyMap) {
-			if(percentageHash.get(key)[0] < maximum) {
-				maximum = percentageHash.get(key)[0];
-				season = key;
-			}
-		}
-		return season;
+		Map<String, double[]> percentageHash = createPercentageHash(teamId);
+
+		return getBestAndWorst(percentageHash, "<");
 	}
 }
