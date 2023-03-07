@@ -591,6 +591,23 @@ public class StatTracker {
 	}
 	
 	public double averageWinPercentage(String teamId) {
-		return 0.0;
+		double wins = 0.0;
+		double tries = 0.0;
+		for(String[] game_team : game_teams) {
+			if(game_team[1].equals(teamId)) {
+				switch (game_team[3]) {
+				
+				case "WIN":
+					wins++;
+					break;
+				case "TIE":
+					wins += 0.5;
+					break;
+				}
+				tries++;
+			}
+		}
+		
+		return wins/tries;
 	}
 }

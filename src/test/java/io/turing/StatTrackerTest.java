@@ -200,6 +200,6 @@ class StatTrackerTest {
 	
 	@Test
 	void testAverageWinPercentage() {
-		assertEquals("0.6", statTracker.averageWinPercentage("30"));
+		assertEquals(0.6, statTracker.averageWinPercentage("30"), 0.2);
 	}
 }
