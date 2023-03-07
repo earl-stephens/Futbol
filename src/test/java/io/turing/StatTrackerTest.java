@@ -197,4 +197,9 @@ class StatTrackerTest {
 		statTracker2 = new StatTracker(file1a, file2a, file3a);
 		assertEquals("20152016", statTracker2.worstSeason("4"));
 	}
+	
+	@Test
+	void testAverageWinPercentage() {
+		assertEquals("0.6", statTracker.averageWinPercentage("30"));
+	}
 }

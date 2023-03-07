@@ -589,4 +589,8 @@ public class StatTracker {
 
 		return getBestAndWorst(percentageHash, "<");
 	}
+	
+	public double averageWinPercentage(String teamId) {
+		return 0.0;
+	}
 }
