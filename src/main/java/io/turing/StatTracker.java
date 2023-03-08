@@ -634,4 +634,8 @@ public class StatTracker {
 		}
 		return goalsScored;
 	}
+	
+	public String favoriteOpponent(String teamId) {
+		return "";
+	}
 }

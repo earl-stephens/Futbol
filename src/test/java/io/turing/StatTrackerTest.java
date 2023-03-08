@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 class StatTrackerTest {
 	static StatTracker statTracker;
 	static StatTracker statTracker2;
+	static StatTracker statTracker3;
 
 	@BeforeAll
 	static void setUp() {
@@ -216,5 +217,14 @@ class StatTrackerTest {
 		assertEquals(2, statTracker.fewestGoalsScored("4"));
 		assertEquals(0, statTracker.fewestGoalsScored("19"));
 		assertNotEquals(5, statTracker.mostGoalsScored("10"));
+	}
+	
+	@Test
+	void testFavoriteOpponent() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("DC United", statTracker3.favoriteOpponent("3"));
 	}
 }
