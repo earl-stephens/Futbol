@@ -2,6 +2,7 @@ package io.turing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -206,5 +207,7 @@ class StatTrackerTest {
 	@Test
 	void testMostGoalsScored() {
 		assertEquals(4, statTracker.mostGoalsScored("19"));
+		assertEquals(6, statTracker.mostGoalsScored("13"));
+		assertNotEquals(5, statTracker.mostGoalsScored("10"));
 	}
 }

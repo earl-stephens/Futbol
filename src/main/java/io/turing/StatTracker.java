@@ -612,6 +612,14 @@ public class StatTracker {
 	}
 	
 	public int mostGoalsScored(String teamId) {
-		return 0;
+		int goalsScored = 0;
+		for(String[] game : game_teams) {
+			if(game[1].equals(teamId)) {
+				if(Integer.parseInt(game[6]) > goalsScored) {
+					goalsScored = Integer.parseInt(game[6]);
+				}
+			}
+		}
+		return goalsScored;
 	}
 }
