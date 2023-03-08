@@ -622,4 +622,16 @@ public class StatTracker {
 		}
 		return goalsScored;
 	}
+	
+	public int fewestGoalsScored(String teamId) {
+		int goalsScored = 0;
+		for(String[] game : game_teams) {
+			if(game[1].equals(teamId)) {
+				if(Integer.parseInt(game[6]) > goalsScored) {
+					goalsScored = Integer.parseInt(game[6]);
+				}
+			}
+		}
+		return goalsScored;
+	}
 }

@@ -210,4 +210,11 @@ class StatTrackerTest {
 		assertEquals(6, statTracker.mostGoalsScored("13"));
 		assertNotEquals(5, statTracker.mostGoalsScored("10"));
 	}
+	
+	@Test
+	void testFewestGoalsScored() {
+		assertEquals(2, statTracker.fewestGoalsScored("4"));
+		//assertEquals(6, statTracker.mostGoalsScored("13"));
+		//assertNotEquals(5, statTracker.mostGoalsScored("10"));
+	}
 }
