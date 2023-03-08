@@ -610,4 +610,8 @@ public class StatTracker {
 		
 		return wins/tries;
 	}
+	
+	public int mostGoalsScored(String teamId) {
+		return 0;
+	}
 }
