@@ -635,7 +635,7 @@ public class StatTracker {
 		return goalsScored;
 	}
 	
-	public String favoriteOpponent(String teamId) {
+	private Map<String, double[]> generateOpponentHash(String teamId) {
 		Map<String, double[]> opponentHash = new HashMap<>();
 		for(String[] game : games) {
 			//team is the away team
@@ -655,6 +655,7 @@ public class StatTracker {
 					opponentHash.put(game[5], newAverageArray);
 				}
 			} else if(game[5].equals(teamId)) {
+				//team is the home team
 				int winLoss = 0;
 				if(Integer.parseInt(game[7]) > Integer.parseInt(game[6])) {
 					winLoss = 1;
@@ -671,75 +672,21 @@ public class StatTracker {
 				}
 			}
 		}
-		Set<String> keyMap = opponentHash.keySet();
-		double winningAverage = 0.0;
-		String opponent = "";
-		for(String key : keyMap) {
-			if(opponentHash.get(key)[0] > winningAverage) {
-				winningAverage = opponentHash.get(key)[0];
-				opponent = key;
-			}
-		}
-		String teamName = "";
-		for(String[] team : teams) {
-			if(team[0].equals(opponent)) {
-				teamName = team[2];
-			}
-		}
-		return teamName;
+		return opponentHash;
+	}
+	
+	public String favoriteOpponent(String teamId) {
+		Map<String, double[]> opponentHash = generateOpponentHash(teamId);
+		String opponent = getBestAndWorst(opponentHash, ">");
+
+		return getTeamNameFromId(opponent);
 	}
 	
 	public String rival(String teamId) {
-		Map<String, double[]> opponentHash = new HashMap<>();
-		for(String[] game : games) {
-			//team is the away team
-			if(game[4].equals(teamId)) {
-				int winLoss = 0;
-				if(Integer.parseInt(game[6]) > Integer.parseInt(game[7])) {
-					winLoss = 1;
-				}
-				if(opponentHash.containsKey(game[5])) {
-					double average = opponentHash.get(game[5])[0];
-					double numberOfGames = opponentHash.get(game[5])[1];
-					double updatedAverage = (average * numberOfGames + winLoss)/(numberOfGames + 1);
-					double[] updatedAverageArray = {updatedAverage, numberOfGames};
-					opponentHash.replace(game[5], updatedAverageArray);
-				} else {
-					double[] newAverageArray = {winLoss, 1.0};
-					opponentHash.put(game[5], newAverageArray);
-				}
-			} else if(game[5].equals(teamId)) {
-				int winLoss = 0;
-				if(Integer.parseInt(game[7]) > Integer.parseInt(game[6])) {
-					winLoss = 1;
-				}
-				if(opponentHash.containsKey(game[4])) {
-					double average = opponentHash.get(game[4])[0];
-					double numberOfGames = opponentHash.get(game[4])[1];
-					double updatedAverage = (average * numberOfGames + winLoss)/(numberOfGames + 1);
-					double[] updatedAverageArray = {updatedAverage, numberOfGames};
-					opponentHash.replace(game[4], updatedAverageArray);
-				} else {
-					double[] newAverageArray = {winLoss, 1.0};
-					opponentHash.put(game[4], newAverageArray);
-				}
-			}
-		}
-		Set<String> keyMap = opponentHash.keySet();
-		double losingAverage = 1000.0;
-		String opponent = "";
-		for(String key : keyMap) {
-			if(opponentHash.get(key)[0] < losingAverage) {
-				losingAverage = opponentHash.get(key)[0];
-				opponent = key;
-			}
-		}
-		String teamName = "";
-		for(String[] team : teams) {
-			if(team[0].equals(opponent)) {
-				teamName = team[2];
-			}
-		}
-		return teamName;
+		Map<String, double[]> opponentHash = generateOpponentHash(teamId);
+
+		String opponent = getBestAndWorst(opponentHash, "<");
+
+		return getTeamNameFromId(opponent);
 	}
 }
