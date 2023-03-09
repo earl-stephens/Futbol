@@ -227,4 +227,13 @@ class StatTrackerTest {
 		statTracker3 = new StatTracker(file1a, file2a, file3a);
 		assertEquals("DC United", statTracker3.favoriteOpponent("3"));
 	}
+	
+	@Test
+	void testRival() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("FC Dallas", statTracker3.rival("3"));
+	}
 }

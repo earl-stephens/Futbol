@@ -688,4 +688,8 @@ public class StatTracker {
 		}
 		return teamName;
 	}
+	
+	public String rival(String teamId) {
+		return "";
+	}
 }
