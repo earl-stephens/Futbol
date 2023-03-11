@@ -246,4 +246,14 @@ class StatTrackerTest {
 		assertEquals(5, statTracker3.biggestTeamBlowout("3"));
 		assertNotEquals(6, statTracker3.biggestTeamBlowout("3"));
 	}
+	
+	@Test
+	void testWorstLoss() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals(7, statTracker3.worstLoss("3"));
+		assertNotEquals(6, statTracker3.worstLoss("1"));
+	}
 }

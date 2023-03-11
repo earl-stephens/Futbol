@@ -724,4 +724,22 @@ public class StatTracker {
 		}
 		return biggestBlowout;
 	}
+	
+	public int worstLoss(String teamId) {
+		int worstLoss = 0;
+		for(String[] game : games) {
+			if(game[4].equals(teamId)) {
+				int difference = Integer.parseInt(game[7]) - Integer.parseInt(game[6]);
+				if(difference > worstLoss) {
+					worstLoss = difference;
+				}
+			} else if(game[5].equals(teamId)) {
+				int difference = Integer.parseInt(game[6]) - Integer.parseInt(game[7]);
+				if(difference > worstLoss) {
+					worstLoss = difference;
+				}
+			}
+		}
+		return worstLoss;
+	}
 }
