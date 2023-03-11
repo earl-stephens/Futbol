@@ -244,5 +244,6 @@ class StatTrackerTest {
 		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
 		statTracker3 = new StatTracker(file1a, file2a, file3a);
 		assertEquals(5, statTracker3.biggestTeamBlowout("3"));
+		assertNotEquals(6, statTracker3.biggestTeamBlowout("3"));
 	}
 }
