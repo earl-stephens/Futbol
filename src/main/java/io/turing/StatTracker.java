@@ -742,4 +742,9 @@ public class StatTracker {
 		}
 		return worstLoss;
 	}
+	
+	public Map<String, Double> headToHead(String teamId) {
+		Map<String, Double> headToHead = new HashMap<>();
+		return headToHead;
+	}
 }

@@ -256,4 +256,22 @@ class StatTrackerTest {
 		assertEquals(7, statTracker3.worstLoss("3"));
 		assertNotEquals(6, statTracker3.worstLoss("1"));
 	}
+	
+	@Test
+	void testHeadToHead() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		Map<String, Double> expected = new HashMap<String, Double>()
+				{{
+					put("6", 0.0);
+					put("15", 0.14);
+					put("5", 0.33);
+					put("14", 0.66);
+					put("9", 0.5);
+					put("4", 0.5);
+				}};
+		assertEquals(expected, statTracker3.headToHead("3"));
+	}
 }
