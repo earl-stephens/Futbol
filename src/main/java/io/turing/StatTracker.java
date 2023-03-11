@@ -706,4 +706,8 @@ public class StatTracker {
 		String opponent = getBestAndWorst(opponentHash, "<");
 		return getTeamNameFromId(opponent);
 	}
+	
+	public int biggestTeamBlowout(String teamId) {
+		return 0;
+	}
 }
