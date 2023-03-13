@@ -762,4 +762,9 @@ public class StatTracker {
 		}
 		return headToHead;
 	}
+	
+	public Map<String, Map<String, Double>> seasonalSummary(String teamId) {
+		Map<String, Map<String, Double>> seasonalSummary = new HashMap<>();
+		return seasonalSummary;
+	}
 }

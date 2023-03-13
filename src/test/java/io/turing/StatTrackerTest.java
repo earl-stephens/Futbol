@@ -274,4 +274,33 @@ class StatTrackerTest {
 				}};
 		assertEquals(expected, statTracker3.headToHead("3"));
 	}
+	
+	@Test
+	void testSeasonalSummary() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		Map<String, Map<String, Double>> expected = new HashMap<>();
+		Map<String, Double> regularSeasonValues = new HashMap<String, Double>() 
+				{{
+					put("win_percentage", 0.5);
+					put("total_goals_scored", (double)12);
+					put("total_goals_against", (double)15);
+					put("average_goals_scored", (double)2);
+					put("average_goals_against", 2.5);
+				}};
+		Map<String, Double> postSeasonValues = new HashMap<String, Double>()
+				{{
+					put("win_percentage", 0.28);
+					put("total_goals_scored", (double)35);
+					put("total_goals_against", (double)39);
+					put("average_goals_scored", 1.94);
+					put("average_goals_against", 2.17);
+					
+				}};
+		expected.put("regular_season", regularSeasonValues);
+		expected.put("post_season", postSeasonValues);
+		assertEquals(expected, statTracker3.seasonalSummary("3"));
+	}
 }
