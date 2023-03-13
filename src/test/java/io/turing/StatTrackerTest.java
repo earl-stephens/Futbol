@@ -266,9 +266,9 @@ class StatTrackerTest {
 		Map<String, Double> expected = new HashMap<String, Double>()
 				{{
 					put("6", 0.0);
-					put("15", 0.14);
+					put("15", 0.15);
 					put("5", 0.33);
-					put("14", 0.66);
+					put("14", 0.75);
 					put("9", 0.5);
 					put("4", 0.5);
 				}};

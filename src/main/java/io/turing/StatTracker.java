@@ -2,6 +2,8 @@ package io.turing;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -651,13 +653,20 @@ public class StatTracker {
 		return winLoss;
 	}
 	
+	private double roundedAverage(double updatedAverage) {
+		BigDecimal bd = BigDecimal.valueOf(updatedAverage);
+		bd = bd.setScale(2, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+		}
+	
 	private Map<String, double[]> getAwayTeamHash(Map<String, double[]> opponentHash, String[] game, String teamId) {
 		int winLoss = getAwayWinLoss(game);
 		if(opponentHash.containsKey(game[5])) {
 			double average = opponentHash.get(game[5])[0];
 			double numberOfGames = opponentHash.get(game[5])[1];
 			double updatedAverage = (average * numberOfGames + winLoss)/(numberOfGames + 1);
-			double[] updatedAverageArray = {updatedAverage, numberOfGames};
+			double roundedAverage = roundedAverage(updatedAverage);
+			double[] updatedAverageArray = {roundedAverage, numberOfGames + 1};
 			opponentHash.replace(game[5], updatedAverageArray);
 		} else {
 			double[] newAverageArray = {winLoss, 1.0};
@@ -672,7 +681,8 @@ public class StatTracker {
 			double average = opponentHash.get(game[4])[0];
 			double numberOfGames = opponentHash.get(game[4])[1];
 			double updatedAverage = (average * numberOfGames + winLoss)/(numberOfGames + 1);
-			double[] updatedAverageArray = {updatedAverage, numberOfGames};
+			double roundedAverage = roundedAverage(updatedAverage);
+			double[] updatedAverageArray = {roundedAverage, numberOfGames + 1};
 			opponentHash.replace(game[4], updatedAverageArray);
 		} else {
 			double[] newAverageArray = {winLoss, 1.0};
@@ -745,6 +755,11 @@ public class StatTracker {
 	
 	public Map<String, Double> headToHead(String teamId) {
 		Map<String, Double> headToHead = new HashMap<>();
+		Map<String, double[]> winningHash = generateOpponentHash(teamId);
+		Set<String> keyMap = winningHash.keySet();
+		for(String key : keyMap) {
+			headToHead.put(key, winningHash.get(key)[0]);
+		}
 		return headToHead;
 	}
 }
