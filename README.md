@@ -7,8 +7,7 @@
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Installation](#installation)  
+- [Introduction](#introduction)  
 - [Getting Started](#getting-started)  
 - [Further Improvements](#further-improvements)  
 - [Built With](#built-with)  
@@ -17,19 +16,15 @@
 
 ## Introduction
 
-
-
-## Installation
-
-
+This project is one I adapted from the Turing School of Software and Design's curriculum.  The project is written to be done in Ruby.  I took the project requirements and made it into a Java project.  The project requirements can be found at [Futbol](https://backend.turing.edu/module1/projects/futbol_pd/).  The three data files (in CSV format) were left unchanged.
 
 ## Getting Started   
 
-
+The program does not have any output.  The main method is used to instantiate a StatTracker object.  Creating the test suite and the accompanying code are the objectives of the project, instead of displaying something to the user.  As a result, to get started, the user simply runs the test suite and checks for passing tests.
 
 ## Further Improvements
 
-
+The project used a large amount of arrays, hashmaps and sets.  I would like to redo the project in an MVC framework, with the CSV data files imported into a database.  SQL could then be used to query the database for the data, instead of having to create all of the arrays and hashmaps.
 
 ## Built With
 
@@ -41,7 +36,9 @@ Eclipse 2020-06
 
 Apache Maven 3.8.6
 
-## Coverage
+## Coverage  
+
+Test coverage was 98.4%.  SonarLint found 17 issues.
 
 ## Authors
 
