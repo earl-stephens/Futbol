@@ -609,8 +609,11 @@ public class StatTracker {
 				tries++;
 			}
 		}
-		
-		return wins/tries;
+		if(tries == 0) {
+			return 0.0;
+		} else {
+			return wins/tries;
+		}
 	}
 	
 	public int mostGoalsScored(String teamId) {
@@ -659,7 +662,7 @@ public class StatTracker {
 		return bd.doubleValue();
 		}
 	
-	private Map<String, double[]> getAwayTeamHash(Map<String, double[]> opponentHash, String[] game, String teamId) {
+	private Map<String, double[]> getAwayTeamHash(Map<String, double[]> opponentHash, String[] game) {
 		int winLoss = getAwayWinLoss(game);
 		if(opponentHash.containsKey(game[5])) {
 			double average = opponentHash.get(game[5])[0];
@@ -675,7 +678,7 @@ public class StatTracker {
 	return opponentHash;	
 	}
 	
-	private Map<String, double[]> getHomeTeamHash(Map<String, double[]> opponentHash, String[] game, String teamId) {
+	private Map<String, double[]> getHomeTeamHash(Map<String, double[]> opponentHash, String[] game) {
 		int winLoss = getHomeWinLoss(game);
 		if(opponentHash.containsKey(game[4])) {
 			double average = opponentHash.get(game[4])[0];
@@ -696,10 +699,10 @@ public class StatTracker {
 		for(String[] game : games) {
 			//team is the away team
 			if(game[4].equals(teamId)) {
-				opponentHash = getAwayTeamHash(opponentHash, game, teamId);
+				opponentHash = getAwayTeamHash(opponentHash, game);
 			} else if(game[5].equals(teamId)) {
 				//team is the home team
-				opponentHash = getHomeTeamHash(opponentHash, game, teamId);
+				opponentHash = getHomeTeamHash(opponentHash, game);
 			}
 		}
 		return opponentHash;
@@ -761,10 +764,5 @@ public class StatTracker {
 			headToHead.put(key, winningHash.get(key)[0]);
 		}
 		return headToHead;
-	}
-	
-	public Map<String, Map<String, Double>> seasonalSummary(String teamId) {
-		Map<String, Map<String, Double>> seasonalSummary = new HashMap<>();
-		return seasonalSummary;
 	}
 }
