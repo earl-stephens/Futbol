@@ -2,6 +2,10 @@ package io.turing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,6 +13,7 @@ import org.junit.jupiter.api.Test;
 class StatTrackerTest {
 	static StatTracker statTracker;
 	static StatTracker statTracker2;
+	static StatTracker statTracker3;
 
 	@BeforeAll
 	static void setUp() {
@@ -162,5 +167,111 @@ class StatTrackerTest {
 		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
 		statTracker2 = new StatTracker(file1a, file2a, file3a);
 		assertEquals("New York Red Bulls", statTracker2.leastAccurateTeam("20162017"));
+	}
+	
+	@Test
+	void testTeamInfo() {
+		Map<String, String> expected = new HashMap<>();
+		expected.put("team_id", "18");
+		expected.put("franchise_id", "34");
+		expected.put("team_name", "Minnesota United FC");
+		expected.put("abbreviation", "MIN");
+		expected.put("link", "/api/v1/teams/18");
+		
+		assertEquals("34", statTracker.teamInfo("18").get("franchise_id"));
+	}
+	
+	@Test
+	void testBestSeason() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker2 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("20172018", statTracker2.bestSeason("4"));
+		assertEquals("20172018", statTracker2.bestSeason("19"));
+	}
+	
+	@Test
+	void testWorstSeason() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_2.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker2 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("20152016", statTracker2.worstSeason("4"));
+	}
+	
+	@Test
+	void testAverageWinPercentage() {
+		assertEquals(0.6, statTracker.averageWinPercentage("30"), 0.2);
+	}
+	
+	@Test
+	void testMostGoalsScored() {
+		assertEquals(4, statTracker.mostGoalsScored("19"));
+		assertEquals(6, statTracker.mostGoalsScored("13"));
+		assertNotEquals(5, statTracker.mostGoalsScored("10"));
+	}
+	
+	@Test
+	void testFewestGoalsScored() {
+		assertEquals(2, statTracker.fewestGoalsScored("4"));
+		assertEquals(0, statTracker.fewestGoalsScored("19"));
+		assertNotEquals(5, statTracker.mostGoalsScored("10"));
+	}
+	
+	@Test
+	void testFavoriteOpponent() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("DC United", statTracker3.favoriteOpponent("3"));
+	}
+	
+	@Test
+	void testRival() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals("FC Dallas", statTracker3.rival("3"));
+	}
+	
+	@Test
+	void testBiggestTeamBlowout() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals(5, statTracker3.biggestTeamBlowout("3"));
+		assertNotEquals(6, statTracker3.biggestTeamBlowout("3"));
+	}
+	
+	@Test
+	void testWorstLoss() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		assertEquals(7, statTracker3.worstLoss("3"));
+		assertNotEquals(6, statTracker3.worstLoss("1"));
+	}
+	
+	@Test
+	void testHeadToHead() {
+		String file1a = "/Users/earltstephens/eclipse-workspace/futbol/game_teams_test.csv";
+		String file2a = "/Users/earltstephens/eclipse-workspace/futbol/games_test_3.csv";
+		String file3a = "/Users/earltstephens/eclipse-workspace/futbol/teams.csv";
+		statTracker3 = new StatTracker(file1a, file2a, file3a);
+		Map<String, Double> expected = new HashMap<String, Double>()
+				{{
+					put("6", 0.0);
+					put("15", 0.15);
+					put("5", 0.33);
+					put("14", 0.75);
+					put("9", 0.5);
+					put("4", 0.5);
+				}};
+		assertEquals(expected, statTracker3.headToHead("3"));
 	}
 }
